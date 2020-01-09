@@ -5,7 +5,7 @@
     <h1>Worldskills Conference 2019</h1>
     <h5>August 23, 2019</h5>
 </div>
-
+<form method = "post" action = "#">
     <div class="panel-heading">
         <br>
         <h4>Create New Channel</h4>
@@ -21,6 +21,7 @@
         <br>
         <input type="submit" value="Save Channel">
     </div>
+</form>
 
 
 @endsection

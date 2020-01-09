@@ -2,8 +2,7 @@
 
 @section('content')
 <div class="panel-heading">
-	<h1>Dashboard testing</h1>
-    <h2>test?!!</h2>
+	<h1>Dashboard</h1>
 </div>
 
 
