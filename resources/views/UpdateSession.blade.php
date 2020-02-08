@@ -5,10 +5,9 @@
         <h2 class="mt-3 mb-3">{{$formatted_slug}}</h2>
         <hr/>
         <h4 class="mt-3 mb-5">Update Session</h4>
-        @if (session('alertmessage'))
-        <p style="color:red">{{ session('alertmessage') }}
-        </p>
-        @endif
+
+        @include('layouts.flash-messages')
+
         {!! Form::open(['method'=>'POST','action'=>['SessionController@storeUpdate',$slug]]) !!}
 
         @csrf
@@ -89,7 +88,7 @@
         <hr/>
         <div class="form-group form-inline">
             {!! Form::submit('Update Session',['class'=>'btn btn-primary mr-5', 'id'=>'update']) !!}
-            <a href="{{route('event')}}" class="mr-5">Cancel</a>
+            <a href="{{route('event.manage_event_details',['slug'=>$slug])}}" class="mr-5">Cancel</a>
 
             <a href="{{route('event.delete_session',['slug'=>$slug, 'id'=>$id])}}">Delete Session</a>
         </div>

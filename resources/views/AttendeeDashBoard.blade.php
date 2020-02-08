@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+
         @if(session('alertmessage'))
             <p style="color: green">{{session('alertmessage')}}</p>
         @endif
@@ -18,7 +19,9 @@
                             </div>
                         </div>
                     @endforeach
+
                 </div>
+              
             </div>
         </div>
 @endsection

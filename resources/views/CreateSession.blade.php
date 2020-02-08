@@ -5,10 +5,8 @@
     <h2 class="mt-3 mb-3">{{$formatted_slug ?? ''}}</h2>
     <hr/>
     <h4 class="mt-3 mb-5">Create Session</h4>
-    @if (session('alertmessage'))
-        <p style="color:red">{{ session('alertmessage')}}
-        </p>
-    @endif
+
+    @include('layouts.flash-messages')
 
     {!! Form::open(['method'=>'POST','action'=>['SessionController@store', $slug]]) !!}
     @csrf
@@ -88,7 +86,7 @@
         <hr/>
         <div class="form-group form-inline">
             {!! Form::submit('Create Session',['class'=>'btn btn-primary mr-5','id'=>'submit']) !!}
-            <a href="{{route('event')}}">Cancel</a>
+            <a href="{{route('event.overview',['slug'=>$slug])}}" class="mr-5">Cancel</a>
         </div>
 
     {!! Form::close() !!}

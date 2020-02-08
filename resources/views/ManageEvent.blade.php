@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+
 <div class="panel-heading">
 	<div class="row" style="display: flex">
 		<div class="col-10">

@@ -38,7 +38,7 @@ class LoginController extends Controller
      * @return void
      */
 
-     public function showOrganizerLoginForm()
+    public function showOrganizerLoginForm()
     {
         return view('auth.login', ['url' => 'organizer']);
     }
@@ -54,7 +54,7 @@ class LoginController extends Controller
         if ($valid) {
             return Redirect::to('/event');
             // Auth::guard('organizer')->user();
-            // 
+            //
             // return redirect(route('event'))->with(['error' => 'No permission']);
         }
 

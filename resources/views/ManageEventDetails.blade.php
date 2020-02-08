@@ -54,7 +54,7 @@
 		<div class="right col-6" >
       <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 			<input type="submit" class="btn btn-primary mr-5" value="Save" style="float: right;"/>
-</form>
+    </form>
 			<form action="{{action('EventController@deleteEvent',['slug' => $event->event_slug])}}" method="POST">
 			    <input type="hidden" name="_method" value="DELETE">
 			    <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -214,6 +214,7 @@
 			</table>
 		</div> {{-- End col 12--}}
 	</div> {{-- End row--}}
-</div> {{-- End Session row--}}
+</div>
+{{-- End Session row--}}
 
 @endsection

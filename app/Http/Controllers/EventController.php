@@ -16,20 +16,18 @@ use Auth;
 class EventController extends Controller
 {
 
-  public function __construct()
+    public function __construct()
     {
-            // $this->middleware('guest')->except('logout');
-            $this->middleware('guest:organizer')->except('logout');
-            // $this->middleware('guest:attendee')->except('logout');
+        // $this->middleware('guest')->except('logout');
+        $this->middleware('guest:organizer')->except('logout');
+        // $this->middleware('guest:attendee')->except('logout');
     }
 
 
-  // Page to display all events that organizer has
-  public function index()
-  {
-    $events = Event::all();
-
-    $dataCount = DB::table('events')->count();
+    // Page to display all events that organizer has
+    public function index()
+    {
+        $events = Event::all();
 
     $data = DB::table('events')->get()->last();
     $countOrgEvent = DB::table('events')->where('organizer_id', Auth::user()->id)->count();
@@ -57,114 +55,123 @@ class EventController extends Controller
 
   }
 
-  // Create method for event creation
-  public function create(Request $request)
-  {
-    // $event = DB::table('events')->first();
 
-    if($request->isMethod('post') )
-    {
-      $validator = Validator::make($request -> all(), [
-        'event_name' => 'required',
-        'event_slug' => 'required',
-        'event_date' => 'required'
-      ]);
-
-      if($validator->fails())
-      {
-        return redirect()->route('event.create')->withErrors($validator)->withInput();
-      }
-      else
-      {
-        $event = new Event;
-        $event->event_name = $request->event_name;
-        $event->event_slug = $request->event_slug;
-        // $event->organizer_id = $request->organizer;
-        $event->organizer_id = Auth::user()->id;
-        $event->event_date = $request->event_date;
-        $insert = $event->save();
-
-        if($insert)
-        {
-          return redirect()->route('event')->with('success', 'Event successfully created');
-        }
-        else
-        {
-          return redirect()->route('event')->with('error', 'An error occured while creating event');
-        }
-      }
+        return view('ManageEvent', compact(['events','dataArr']));
     }
-    return view('CreateEvent');
-  }
 
-  // Event overview/details page
-  public function overview($slug){
-    // Get slug from database
-    // $event = \DB::table('events')->where('event_slug', $slug)->first();
-    $event = Event::where('event_slug', '=', $slug)->first();
+    // Create method for event creation
+    public function create(Request $request)
+    {
+        // $event = DB::table('events')->first();
 
-    // Get the ticket data
-    $ticket = Ticket::all();
+        if($request->isMethod('post') )
+        {
+            $validator = Validator::make($request -> all(), [
+                'event_name' => 'required',
+                'event_slug' => 'required',
+                'event_date' => 'required'
+            ]);
 
-    // Get the ticket data
-    $session = Session::all();
+            if($validator->fails())
+            {
+                return redirect()->route('event.create')->withErrors($validator)->withInput();
+            }
+            else
+            {
+                $event = new Event;
+                $event->event_name = $request->event_name;
+                $event->event_slug = $request->event_slug;
+                // $event->organizer_id = $request->organizer;
+                $event->organizer_id = Auth::user()->id;
+                $event->event_date = $request->event_date;
+                $insert = $event->save();
 
-    // Get the ticket data
-    $room = Room::all();
+                if($insert)
+                {
+                    return redirect()->route('event')->with('success', 'Event successfully created');
+                }
+                else
+                {
+                    return redirect()->route('event')->with('error', 'An error occured while creating event');
+                }
+            }
+        }
+        return view('CreateEvent');
+    }
 
-    // Get the ticket data
-    $channel = Channel::all();
+    // Event overview/details page
+    public function overview($slug){
+        // Get slug from database
+        // $event = \DB::table('events')->where('event_slug', $slug)->first();
+        $event = Event::where('event_slug', '=', $slug)->first();
 
-    // Works for room 
-    /*$data = DB::table('rooms')
-      ->select('channel_id', DB::raw('COUNT(rooms.channel_id) AS total_rooms'))
-      ->groupBy('channel_id')
-      ->get(); */
+        // Get the ticket data
+        $ticket = Ticket::all();
 
-    $data = DB::table("channels")
-    ->join('rooms', 'channels.id', '=', 'rooms.channel_id')
-    ->join('sessions', 'rooms.id', '=', 'sessions.room_id')
-    ->select('channels.channel_name', DB::raw('COUNT(sessions.id) AS total_sessions, COUNT(rooms.id) AS total_rooms'))
-    ->groupBy('channels.channel_name')
-    ->get();
+        // Get the ticket data
+        $session = Session::all();
 
-    // dd($ticket);
+        // Get the ticket data
+        $room = Room::all();
+
+        // Get the ticket data
+        $channel = Channel::all();
+
+        // Works for room
+        /*$data = DB::table('rooms')
+          ->select('channel_id', DB::raw('COUNT(rooms.channel_id) AS total_rooms'))
+          ->groupBy('channel_id')
+          ->get(); */
+
+        $data = DB::table("channels")
+            ->join('rooms', 'channels.id', '=', 'rooms.channel_id')
+            ->join('sessions', 'rooms.id', '=', 'sessions.room_id')
+            ->select('channels.channel_name', DB::raw('COUNT(sessions.id) AS total_sessions, COUNT(rooms.id) AS total_rooms'))
+            ->groupBy('channels.channel_name')
+            ->get();
+
+        // dd($ticket);
 
 
-      // / Get the event based on slug
-    // $test = DB::table('events')->where('event_slug', '=', $slug)->get();
+        // / Get the event based on slug
+        // $test = DB::table('events')->where('event_slug', '=', $slug)->get();
 
-    // dd($test);
+        // dd($test);
 
-    return view('EventOverview', compact('event', 'ticket', 'session', 'room', 'channel', 'data'));
-  }
+        return view('EventOverview', compact('event', 'ticket', 'session', 'room', 'channel', 'data'));
+    }
 
-  public function manage($slug){
-     // Get slug from database
-    // $event = \DB::table('events')->where('event_slug', $slug)->first();
-    $event = Event::where('event_slug', '=', $slug)->first();
+    public function manage($slug){
+        // Get slug from database
+        // $event = \DB::table('events')->where('event_slug', $slug)->first();
+        $event = Event::where('event_slug', '=', $slug)->first();
 
-    // Get the ticket data
-    $ticket = Ticket::all();
+        // Get the ticket data
+        $ticket = Ticket::all();
 
-    // Get the ticket data
-    $session = Session::all();
+        // Get the ticket data
+        $session = Session::all();
 
-    // Get the ticket data
-    $room = Room::all();
+        // Get the ticket data
+        $room = Room::all();
 
-    // Get the ticket data
-    $channel = Channel::all();
+        // Get the ticket data
+        $channel = Channel::all();
 
-    $data = DB::table("channels")
-    ->join('rooms', 'channels.id', '=', 'rooms.channel_id')
-    ->join('sessions', 'rooms.id', '=', 'sessions.room_id')
-    ->select('channels.channel_name', DB::raw('COUNT(sessions.id) AS total_sessions, COUNT(rooms.id) AS total_rooms'))
-    ->groupBy('channels.channel_name')
-    ->get();
+        $data = DB::table("channels")
+            ->join('rooms', 'channels.id', '=', 'rooms.channel_id')
+            ->join('sessions', 'rooms.id', '=', 'sessions.room_id')
+            ->select('channels.channel_name', DB::raw('COUNT(sessions.id) AS total_sessions, COUNT(rooms.id) AS total_rooms'))
+            ->groupBy('channels.channel_name')
+            ->get();
 
-    return view('ManageEventDetails', compact('event', 'ticket', 'session', 'room', 'channel', 'data'));
-  }
+        return view('ManageEventDetails', compact('event', 'ticket', 'session', 'room', 'channel', 'data'));
+    }
+
+    public function updateEvent(Request $request, $slug){
+        // Get event from slug
+        $event = Event::where('event_slug', '=', $slug)->first();
+
 
   public function updateEvent(Request $request, $slug){
     // Get event from slug
@@ -198,15 +205,13 @@ class EventController extends Controller
         return redirect('event/'.$newSlug.'/manage/')->with('success', 'Event successfully updated');
       }
     }
-    return view('event');
-  }
 
-  public function deleteEvent($slug){
-    // Get event from slug
-    $event = Event::where('event_slug', '=', $slug)->first();
+    public function deleteEvent($slug){
+        // Get event from slug
+        $event = Event::where('event_slug', '=', $slug)->first();
 
-    $event->delete();
+        $event->delete();
 
-    return redirect('event')->with('success', 'Event deleted');
-  }
+        return redirect('event')->with('success', 'Event deleted');
+    }
 }
