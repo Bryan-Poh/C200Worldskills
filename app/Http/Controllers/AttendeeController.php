@@ -6,8 +6,18 @@ use Illuminate\Http\Request;
 use App\Event;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+
+use Auth;
+
 class AttendeeController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('guest')->except('logout');
+        // $this->middleware('guest:organizer')->except('logout');
+        $this->middleware('guest:attendee')->except('logout');
+    }
+
     public function dashboard()
     {
         $list = DB::table('organizers')
@@ -42,7 +52,7 @@ class AttendeeController extends Controller
                     $tl = $ticketLeft[0]->tickets_left - 1;
                     DB::table('tickets')->where('id', '=', (int)$t)->update(['tickets_left' => $tl]);
                 }
-                $result = "Purchase success!";
+                $result = "Congrats you have successfully registered for the event!";
                 return redirect('/attendee/home')->with('alertmessage', $result);
             
 

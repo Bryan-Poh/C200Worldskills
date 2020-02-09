@@ -25,7 +25,7 @@ class RedirectIfAuthenticated
             // return redirect('/event');
         }
         if ($guard == "attendee" && Auth::guard($guard)->check()) {
-            return redirect('/attendee');
+            return redirect('/attendee/home');
             // return $next($request);
         }
         if (Auth::guard($guard)->check()) {

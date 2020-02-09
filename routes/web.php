@@ -27,11 +27,6 @@ Route::get('/logout', function(){
     return Redirect::to('/login/organizer');
 });
 
-//ATTENDEE SIGN IN
-Route::get('/sign_in', function() {
-    return view('sign_in');
-});
-
 //ATTENDEE SESSION DETAILS
 
 //Middleware
@@ -104,11 +99,14 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 
-Route::get('/attendee',  'AttendeeController@index')->name('attendee');
-Route::group(['prefix' => 'attendee', 'as' => 'attendee.'], function () {
-    Route::get('/event_register/{slug}', 'AttendeeController@eventRegister')->name('event_register');
-    Route::post('/home/{slug}', 'AttendeeController@update')->name('ticket_purchase');
-    Route::get('/home', 'AttendeeController@dashboard')->name('attendee_home');
-    Route::get('/event_agenda/{slug}', 'AttendeeController@eventAgenda')->name('event_agenda');
-//    Route::get('/{slug}', 'AttendeeController@getSlug');
-});
+//Middleware
+// Route::group(['middleware' => ['attendee']], function () {
+    Route::get('/attendee',  'AttendeeController@index')->name('attendee');
+    Route::group(['prefix' => 'attendee', 'as' => 'attendee.'], function () {
+        Route::get('/event_register/{slug}', 'AttendeeController@eventRegister')->name('event_register');
+        Route::post('/home/{slug}', 'AttendeeController@update')->name('ticket_purchase');
+        Route::get('/home', 'AttendeeController@dashboard')->name('attendee_home');
+        Route::get('/event_agenda/{slug}', 'AttendeeController@eventAgenda')->name('event_agenda');
+    //    Route::get('/{slug}', 'AttendeeController@getSlug');
+    });
+// });

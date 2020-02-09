@@ -65,7 +65,7 @@ class LoginController extends Controller
 
     public function showAttendeeLoginForm()
     {
-        return view('auth.login', ['url' => 'attendee']);
+        return view('auth.attendee-login', ['url' => 'attendee']);
     }
 
     public function attendeeLogin(Request $request)
@@ -75,11 +75,11 @@ class LoginController extends Controller
             'token' => 'required'
         ]);
 
-        if (Auth::guard('attendee')->attempt(['lastName' => $request->lastName, 'token' => $request->token], $request->get('remember'))) {
-
-            return redirect()->intended('/attendee');
+        $valid = Auth::guard('attendee')->attempt(['lastName' => $request->lastName, 'token' => $request->token]);
+        if ($valid) {
+            return Redirect::to('/attendee/home');
         }
-        return back()->withInput($request->only('lastName', 'remember'));
+        return back()->with(['error' => 'Please log in']);
     }
 
     public function logout(Request $request) {

@@ -2,7 +2,6 @@
 
 @section('content')
 
-
     <div class="panel-heading">
         <div class="row" style="display: flex">
             <div class="col-10">
@@ -29,18 +28,25 @@
 
         <div class="grid-container-events">
             @foreach($ticket as $ticket)
-                @if($ticket->event_id == $event->id)
-                    <div class="card grid-item">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $ticket->ticket_name}}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ $ticket->ticket_cost}}.-</h6>
-                            <br>
-                            <h6 class="card-subtitle mb-2 text-muted">Available until {{ $ticket->tickets_sell_by_date->format('F d, Y') }}</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ $ticket->tickets_left }} tickets available</h6>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
+            @if($ticket->event_id == $event->id)
+                <div class="card grid-item">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ $ticket->ticket_name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ $ticket->ticket_cost}}.-</h6>
+                    <br>
+
+                    @if($ticket->special_validities_id == 2)
+                        <h6 class="card-subtitle mb-2 text-muted">Available until {{ $ticket->tickets_sell_by_date->format('F d, Y') }}</h6>
+                    @elseif($ticket->special_validities_id == 3)
+                        <h6 class="card-subtitle mb-2 text-muted">{{ $ticket->tickets_left }} tickets available</h6>
+                      @else
+
+                      @endif
+
+                  </div>
+                </div>
+            @endif
+        @endforeach
         </div>{{-- End grid-container-events--}}
     </div>{{-- End ticket row --}}
 
