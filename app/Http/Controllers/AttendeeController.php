@@ -54,9 +54,27 @@ class AttendeeController extends Controller
                 }
                 $result = "Congrats you have successfully registered for the event!";
                 return redirect('/attendee/home')->with('alertmessage', $result);
-            
 
-            
+                //  $result = "";
+                // $getEventIdBySlug = DB::table('events')->where('event_slug', '=', $slug)->get();
+                // $ticket = DB::table('tickets')->select('*')->where('event_id', '=', $getEventIdBySlug[0]->id)->get();
+                // $findSessionByEvent = DB::table('sessions')->where('event_id', '=', $getEventIdBySlug[0]->id)->get();
+                // $tickets_sessions['tickets'] = $request->ticketCostCB;
+                // $tickets_sessions['sessions'] = $request->sessions;
+                // foreach ($tickets_sessions as $t) {
+                //     $ticketLeft = DB::table('tickets')->where('id', '=', (int)$t)->get();
+                //     $tl = $ticketLeft[0]->tickets_left - 1;
+                //     DB::table('tickets')->where('id', '=', (int)$t)->update(['tickets_left' => $tl]);
+                //     $event = new AttendeeRegisterEvent;
+                //     $event->event_id = $getEventIdBySlug[0]->id;
+                //     $event ->attendee_id = 1;
+                //     $event ->sessions_id = $findSessionByEvent[0]->id;
+                //     $event->save();
+                //     dd($getEventIdBySlug);
+                // }
+                // $result = "Congrats you have successfully registered for the event!";
+                // return redirect('/attendee/home')->with('alertmessage', $result);
+//            return response()->json(['success'=>true,'url'=> route('/attendee/home')]);
     }
 
 

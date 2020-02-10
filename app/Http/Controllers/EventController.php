@@ -198,9 +198,17 @@ class EventController extends Controller
 
     public function deleteEvent($slug){
         // Get event from slug
-        $event = Event::where('event_slug', '=', $slug)->first();
+        $event = Event::where('event_slug', '=', $slug)->get();
+        $eventd = Event::where('event_slug', '=', $slug)->first();
+        $eventID = $event[0]->id;
 
-        $event->delete();
+        DB::table('sessions')->where('event_id','=',$eventID)->delete();
+        DB::table('rooms')->where('event_id','=',$eventID)->delete();
+        DB::table('channels')->where('event_id','=',$eventID)->delete();
+        DB::table('tickets')->where('event_id','=',$eventID)->delete();
+        $eventd->delete();
+
+
 
         return redirect('event')->with('success', 'Event deleted');
     }
